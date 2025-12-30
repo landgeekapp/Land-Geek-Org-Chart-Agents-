@@ -1,0 +1,102 @@
+# Land Geek Agents Configuration
+
+version: "1.0"
+
+# Global Settings
+global:
+  company: "The Land Geek"
+  timezone: "America/Phoenix"
+  business_hours:
+    start: "09:00"
+    end: "17:00"
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+# Agent Definitions
+agents:
+  ceo:
+    name: "CEO Agent"
+    system_prompt: "agents/ceo/system-prompt.md"
+    guardrails: "prompts/guardrails/ceo-guardrails.md"
+    scorecard: "knowledge/scorecards/ceo-scorecard.md"
+    decision_authority: "full"
+    escalation_target: null  # Top of hierarchy
+
+  head_of_operations:
+    name: "Head of Operations Agent"
+    system_prompt: "agents/head-of-operations/system-prompt.md"
+    guardrails: "prompts/guardrails/head-of-operations-guardrails.md"
+    scorecard: "knowledge/scorecards/operations-scorecard.md"
+    decision_authority: "limited"
+    spending_limit: 500
+    escalation_target: "ceo"
+
+  head_of_sales:
+    name: "Head of Sales Agent"
+    system_prompt: "agents/head-of-sales/system-prompt.md"
+    guardrails: "prompts/guardrails/head-of-sales-guardrails.md"
+    scorecard: "knowledge/scorecards/sales-scorecard.md"
+    decision_authority: "limited"
+    discount_limit: 0.10  # 10%
+    escalation_target: "ceo"
+
+  head_of_marketing:
+    name: "Head of Marketing Agent"
+    system_prompt: "agents/head-of-marketing/system-prompt.md"
+    guardrails: "prompts/guardrails/head-of-marketing-guardrails.md"
+    scorecard: "knowledge/scorecards/marketing-scorecard.md"
+    decision_authority: "limited"
+    budget_reallocation_limit: 0.20  # 20%
+    escalation_target: "ceo"
+
+  client_success_manager:
+    name: "Client Success Manager Agent"
+    system_prompt: "agents/client-success-manager/system-prompt.md"
+    guardrails: "prompts/guardrails/client-success-guardrails.md"
+    scorecard: "knowledge/scorecards/client-success-scorecard.md"
+    decision_authority: "support_only"
+    escalation_target: "ceo"
+    secondary_escalation: "head_of_operations"
+
+# Handoff Configuration
+handoffs:
+  sales_to_client_success:
+    trigger: "deal_closed_won"
+    sla_hours: 24
+    required_data:
+      - client_profile
+      - purchase_details
+      - stated_goals
+      - sales_notes
+
+  marketing_to_sales:
+    trigger: "lead_score_gte_7.5"
+    sla_hours: 2
+    required_data:
+      - lead_source
+      - engagement_history
+      - content_consumed
+      - qualification_score
+
+  client_success_to_sales:
+    trigger: "upsell_opportunity"
+    sla_hours: 48
+    required_data:
+      - client_history
+      - current_products
+      - recommended_upgrade
+      - client_interests
+
+# SLA Configuration
+slas:
+  immediate:
+    response_hours: 1
+    triggers: ["legal_concern"]
+  high:
+    response_hours: 4
+    triggers: ["refund_request", "formal_complaint", "system_issue"]
+  standard:
+    response_hours: 24
+    triggers: ["spending_approval", "discount_approval"]
+  low:
+    response_hours: 168  # 1 week
+    triggers: ["hiring_request"]

@@ -1,0 +1,62 @@
+# Land Geek Agents - Thresholds Configuration
+
+version: "1.0"
+
+# Financial Thresholds
+financial:
+  spending:
+    autonomous_limit: 500
+    requires_ceo_above: 500
+    legal_review_above: 25000
+
+  discounts:
+    sales_authority: 0.10  # 10%
+    requires_ceo_above: 0.10
+    max_allowed: 0.25  # 25% - never exceed
+
+  refunds:
+    always_escalate: true
+    escalation_target: "ceo"
+    sla_hours: 4
+
+# Lead Scoring Thresholds
+leads:
+  sql_threshold: 7.5
+  mql_threshold: 5.0
+  score_decay_days: 30  # Re-evaluate after 30 days inactive
+
+# Marketing Thresholds
+marketing:
+  budget_reallocation_limit: 0.20  # 20%
+  campaign_minimum_roi: 2.0
+  lead_quality_minimum: 7.0
+
+# Operations Thresholds
+operations:
+  profit_margin_target: 0.30  # 30%
+  profit_margin_alert: 0.25  # Alert below 25%
+  revenue_per_head_target: 15000
+  on_time_delivery_target: 0.90
+  data_accuracy_target: 0.95
+
+# Client Success Thresholds
+client_success:
+  nps_target: 50
+  retention_target: 0.90  # 90%
+  churn_alert: 0.05  # Alert above 5%
+  response_time_target_hours: 4
+  resolution_time_target_hours: 24
+  inactive_days_alert: 30  # Flag at-risk after 30 days
+
+# Sales Thresholds
+sales:
+  conversion_target: 0.15  # 15%
+  pipeline_coverage: 3.0  # 3x target
+  contact_sla_hours: 2
+  forecast_accuracy_target: 0.85
+
+# Escalation Thresholds
+escalation:
+  sla_warning_percent: 0.75  # Warn at 75% of SLA
+  sla_critical_percent: 0.90  # Critical at 90% of SLA
+  max_escalation_age_hours: 168  # Force resolution after 1 week
